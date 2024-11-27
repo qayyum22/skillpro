@@ -1,11 +1,8 @@
-import Image from "next/image";
 import React from 'react';
-import Link from "next/link";
-import { BookOpen, Headphones, Pen, Mic, ArrowRight } from 'lucide-react';
-import students from "../../public/students-studying.jpg"
+import Link from 'next/link';
+import { BookOpen, Headphones, Pen, Mic, ArrowRight, CheckCircle2 } from 'lucide-react';
 
-
-export default function Home() {
+const LandingPage = () => {
   return (
     <div className="bg-white">
       {/* Hero Section */}
@@ -19,14 +16,12 @@ export default function Home() {
                   <span className="block text-blue-600">Confidence</span>
                 </h1>
                 <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                  Comprehensive preparation platform for all IELTS modules.
-                  Practice with real exam-like questions and get detailed
-                  feedback to improve your score.
+                  Comprehensive preparation platform for all IELTS modules. Practice with real exam-like questions and get detailed feedback to improve your score.
                 </p>
                 <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                   <div className="rounded-md shadow">
                     <Link
-                      href="/auth/signup"
+                      href="/signup"
                       className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10"
                     >
                       Get Started Free
@@ -46,11 +41,9 @@ export default function Home() {
           </div>
         </div>
         <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-          <Image
+          <img
             className="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full"
-            src={students}
-            width={500}
-            height={500}
+            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
             alt="Students studying"
           />
         </div>
@@ -74,12 +67,9 @@ export default function Home() {
                 <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-600 text-white">
                   <BookOpen className="h-6 w-6" />
                 </div>
-                <h3 className="mt-6 text-lg font-medium text-gray-900">
-                  Reading
-                </h3>
+                <h3 className="mt-6 text-lg font-medium text-gray-900">Reading</h3>
                 <p className="mt-2 text-base text-gray-500 text-center">
-                  Practice with authentic academic texts and improve
-                  comprehension
+                  Practice with authentic academic texts and improve comprehension
                 </p>
               </div>
 
@@ -87,9 +77,7 @@ export default function Home() {
                 <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-600 text-white">
                   <Headphones className="h-6 w-6" />
                 </div>
-                <h3 className="mt-6 text-lg font-medium text-gray-900">
-                  Listening
-                </h3>
+                <h3 className="mt-6 text-lg font-medium text-gray-900">Listening</h3>
                 <p className="mt-2 text-base text-gray-500 text-center">
                   Enhance your listening skills with diverse audio materials
                 </p>
@@ -99,9 +87,7 @@ export default function Home() {
                 <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-600 text-white">
                   <Pen className="h-6 w-6" />
                 </div>
-                <h3 className="mt-6 text-lg font-medium text-gray-900">
-                  Writing
-                </h3>
+                <h3 className="mt-6 text-lg font-medium text-gray-900">Writing</h3>
                 <p className="mt-2 text-base text-gray-500 text-center">
                   Master both academic and general writing tasks
                 </p>
@@ -111,9 +97,7 @@ export default function Home() {
                 <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-600 text-white">
                   <Mic className="h-6 w-6" />
                 </div>
-                <h3 className="mt-6 text-lg font-medium text-gray-900">
-                  Speaking
-                </h3>
+                <h3 className="mt-6 text-lg font-medium text-gray-900">Speaking</h3>
                 <p className="mt-2 text-base text-gray-500 text-center">
                   Build confidence with interactive speaking practice
                 </p>
@@ -133,7 +117,7 @@ export default function Home() {
           <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
             <div className="inline-flex rounded-md shadow">
               <Link
-                href="/auth/signup"
+                href="/signup"
                 className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50"
               >
                 Get Started Free <ArrowRight className="ml-2 h-5 w-5" />
@@ -144,4 +128,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default LandingPage;
