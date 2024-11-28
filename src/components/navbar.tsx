@@ -1,13 +1,13 @@
-"use client"
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { Menu, X, GraduationCap } from 'lucide-react';
-// import { useAuth } from '../context/AuthContext';
-import { ProfileDropdown } from './profile-dropdown';
+"use client";
+import React, { useState } from "react";
+import Link from "next/link";
+import { Menu, X, GraduationCap } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { ProfileDropdown } from "./profile-dropdown";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  // const { user, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <nav className="bg-white shadow-sm">
@@ -22,16 +22,39 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-8">
-            <Link href="/" className="text-gray-600 hover:text-gray-900">Home</Link>
-            <Link href="/pricing" className="text-gray-600 hover:text-gray-900">Pricing</Link>
-            <Link href="/resources" className="text-gray-600 hover:text-gray-900">Resources</Link>
-            <Link href="/about" className="text-gray-600 hover:text-gray-900">About Us</Link>
-            {/* {user ?  (<ProfileDropdown user={user} onLogout={logout} />) : ( <><Link href="/login" className="text-gray-600 hover:text-gray-900">Login</Link>
-              <Link href="/signup" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-            >
-              Get Started Free
+            <Link href="/" className="text-gray-600 hover:text-gray-900">
+              Home
             </Link>
-              </>)} */}
+            <Link href="/pricing" className="text-gray-600 hover:text-gray-900">
+              Pricing
+            </Link>
+            <Link
+              href="/resources"
+              className="text-gray-600 hover:text-gray-900"
+            >
+              Resources
+            </Link>
+            <Link href="/about" className="text-gray-600 hover:text-gray-900">
+              About Us
+            </Link>
+            {user ? (
+              <ProfileDropdown user={user} onLogout={logout} />
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="text-gray-600 hover:text-gray-900"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                >
+                  Get Started Free
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -40,7 +63,11 @@ const Navbar = () => {
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
@@ -75,13 +102,13 @@ const Navbar = () => {
               About Us
             </Link>
             <Link
-              href="/login"
+              href="/auth/signin"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             >
-              Login
+              Sign In
             </Link>
             <Link
-              href="/signup"
+              href="/auth/signup"
               className="block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-600 hover:bg-blue-700"
             >
               Get Started Free
