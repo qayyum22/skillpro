@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBvwliHlsft_sXowe6a5WB8rdxZMpFCGnI",
+  apiKey: "",
   authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.VITE_FIREBASE_PROJECT_ID,
   storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
