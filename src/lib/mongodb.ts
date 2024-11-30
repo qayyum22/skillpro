@@ -1,10 +1,10 @@
 import { MongoClient } from "mongodb";
 
-if (!process.env.MONGODB_URI) {
+if (!process.env.GROK_MONGODB_URI) {
     throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
 
-const uri = process.env.MONGODB_URI;
+const uri = process.env.GROK_MONGODB_URI;
 const options = {};
 
 let client;
@@ -16,14 +16,16 @@ if (process.env.NODE_ENV === "development") {
     let globalWithMongo = global as typeof globalThis & {
         _mongoClientPromise: Promise<MongoClient>;
     };
-
     if (!globalWithMongo._mongoClientPromise) {
-        client = new MongoClient(uri)
-        globalWithMongo._mongoClientPromise = client.connect()
+        client = new MongoClient(uri as string);
+        globalWithMongo._mongoClientPromise = client.connect();
     }
-    clientPromise = globalWithMongo._mongoClientPromise
+    clientPromise = globalWithMongo._mongoClientPromise;
 } else {
     // In production mode, it's best to not use a global variable.
+    if (!uri) {
+        throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
+    }
     client = new MongoClient(uri, options);
     clientPromise = client.connect();
 }

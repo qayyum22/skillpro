@@ -42,13 +42,13 @@ const Navbar = () => {
             ) : (
               <>
                 <Link
-                  href="/login"
+                  href="/auth/signin"
                   className="text-gray-600 hover:text-gray-900"
                 >
-                  Login
+                  Sign In
                 </Link>
                 <Link
-                  href="/signup"
+                  href="/auth/signup"
                   className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
                 >
                   Get Started Free
