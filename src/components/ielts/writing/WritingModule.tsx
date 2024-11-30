@@ -25,6 +25,13 @@ const WritingModule: React.FC<WritingModuleProps> = ({
     task2: "",
   });
   const [evaluating, setEvaluating] = useState(false);
+  const [evaluationResults, setEvaluationResults] = useState<any>(null);
+
+  const task1question = tasks.tasks[0].description;
+  const task1answer = answers.task1;
+  const task2question = tasks.tasks[1].description;
+  const task2answer = answers.task2;
+
 
   const handleAnswerChange = (taskId: string, answer: string) => {
     setAnswers((prev) => ({ ...prev, [taskId]: answer }));
@@ -38,27 +45,27 @@ const WritingModule: React.FC<WritingModuleProps> = ({
   };
 
   const handleSubmit = async () => {
-    setShowResults(true);
+    
     setEvaluating(true);
     try {
-      console.log("User Responses:", answers); // Print user responses on console
+     
+      const evaluations = await fetch("/api/writing", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({task1question, task1answer, task2question, task2answer}),
+      });
 
-      // const evaluations = await Promise.all(
-      //   Object.entries(answers).map(([taskId, response]) =>
-      //     evaluateWriting({
-      //       taskId,
-      //       response,
-      //       wordCount: wordCount(response)
-      //     })
-      //   )
-      // );
-      // console.log('Evaluations:', evaluations); // Print evaluations on console
+      if (!evaluations.ok) {
+        throw new Error("Failed to evaluate writing submissions");
+      }
 
-      // if (onComplete) {
-      //   onComplete(evaluations);
-      // } else {
-      //   toast.success('Writing evaluation completed successfully!');
-      // }
+      const data = await evaluations.json();
+      
+      setEvaluationResults(data);
+      setShowResults(true);
+
     } catch (error) {
       toast.error("Failed to evaluate writing submissions");
     } finally {
@@ -140,7 +147,7 @@ const WritingModule: React.FC<WritingModuleProps> = ({
           </div>
         </div>
       )}
-      {showResults && <WritingResults />}
+      {showResults && <WritingResults evaluationResults={evaluationResults}  />}
     </div>
   );
 };
