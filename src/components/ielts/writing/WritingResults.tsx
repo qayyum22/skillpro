@@ -61,7 +61,7 @@ const WritingResults = ({ evaluationResults }: { evaluationResults: any }) => {
         <div className="bg-gray-50 p-6 rounded-lg max-w-4xl mx-auto">
             {/* Task Selection */}
             <div className="flex gap-4 mb-6">
-                {evaluationResults.map((result, index) => (
+                {evaluationResults.map((result: any, index: number) => (
                     <button
                         key={index}
                         onClick={() => setCurrentTask(index)}
@@ -131,8 +131,8 @@ const WritingResults = ({ evaluationResults }: { evaluationResults: any }) => {
                                     {criterion.replace(/([A-Z])/g, ' $1').trim()}
                                 </span>
                                 <div className="flex items-center gap-2">
-                                    <span className={getBandColor(score)}>{score.toFixed(1)}</span>
-                                    {getFeedbackIcon(score)}
+                                    <span className={getBandColor(Number(score))}>{Number(score).toFixed(1)}</span>
+                                    {getFeedbackIcon(Number(score))}
                                 </div>
                             </div>
                         ))}
