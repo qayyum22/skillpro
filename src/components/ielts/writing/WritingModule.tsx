@@ -147,7 +147,7 @@ const WritingModule: React.FC<WritingModuleProps> = ({
           </div>
         </div>
       )}
-      {showResults && <WritingResults evaluationResults={evaluationResults}  />}
+      {showResults && <WritingResults />}
     </div>
   );
 };
