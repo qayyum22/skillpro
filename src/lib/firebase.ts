@@ -1,17 +1,22 @@
 import { initializeApp } from 'firebase/app';
+import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "",
-  authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.VITE_FIREBASE_APP_ID,
-  measurementId: process.env.FIRE_BASE_measurementId
+  apiKey: "AIzaSyAcKpeZTpoIWMGUKJbjSJDTpnqPHOUuYqc",
+  authDomain: "ielts-68206.firebaseapp.com",
+  projectId: "ielts-68206",
+  storageBucket: "ielts-68206.firebasestorage.app",
+  messagingSenderId: "628649416928",
+  appId: "1:628649416928:web:4c0e0c801dc2da22185885",
+  measurementId: "G-J6Y0W4TXMG"
 };
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+
 export const googleProvider = new GoogleAuthProvider();
 export const githubProvider = new GithubAuthProvider();
+
+
+export const firestore = getFirestore(app);
