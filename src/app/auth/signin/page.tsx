@@ -84,7 +84,7 @@ const Login = () => {
           </div>
 
           <div className="text-sm text-center">
-            <Link href="/signup" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
               Don't have an account? Sign up
             </Link>
           </div>

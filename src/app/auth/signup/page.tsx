@@ -1,10 +1,12 @@
 "use client"
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../lib/firebase';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { UserPlus } from 'lucide-react';
+import { doc, setDoc, addDoc, collection } from 'firebase/firestore';
+import { auth, firestore } from '../../../lib/firebase';
+
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -15,10 +17,49 @@ const SignUp = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      router.push('/dashboard');
+      // Create the user with email and password
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Write user data to Firestore
+      // await setDoc(doc(firestore, "users", user.uid), {
+      //   id: user.uid,
+      //   name: email,
+      //   email: user.email,
+      //   subscriptionPlan: {
+      //     type: 'starter',
+      //     fullTestRemaining: 1,
+      //     noduleTestsRemaining: 4,
+      //   },
+      //   accountCreatedAt: new Date().toISOString(),
+      //   lastLogin: Date,
+      // });
+      e.preventDefault();
+      try {
+        await setDoc(doc(firestore, 'users', user.uid), { // Corrected to use `doc`
+          id: user.uid,
+          name: email,
+          email: user.email,
+          auth: user.providerData,
+          subscriptionPlan: {
+            type: 'starter',
+            fullTestRemaining: 1,
+            noduleTestsRemaining: 4,
+          },
+          accountCreatedAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString(), // Corrected `Date` to `new Date().toISOString()`
+        });
+        alert("User created successfully");
+      } catch (err) {
+        console.error(err);
+        alert("Failed to create account");
+      }
+
+      // Redirect after successful account creation
+      router.push("/dashboard");
     } catch (err) {
-      setError('Failed to create account');
+      console.error(err);
+      setError("Failed to create account");
     }
   };
 

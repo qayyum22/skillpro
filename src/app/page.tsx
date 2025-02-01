@@ -1,14 +1,44 @@
+"use client"
 import Image from "next/image";
 import React from 'react';
 import Link from "next/link";
 import { BookOpen, Headphones, Pen, Mic, ArrowRight } from 'lucide-react';
 import students from "../../public/students-studying.jpg"
-
+import { auth, firestore } from "@/lib/firebase";
+import { doc, setDoc, collection, addDoc } from "firebase/firestore";
+import Script from "next/script";
 
 export default function Home() {
+
+
+
+
+  const addUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      addDoc(collection(firestore, 'users',), {
+        Name: "gulam",
+        Age: "60",
+        isMale: true,
+        Email: "gmsiddiqui@gmail.com"
+      });
+      alert("User created successfully");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to create account");
+    }
+  };
+
+
   return (
     <div className="bg-white">
+
       {/* Hero Section */}
+
+      <button onClick={addUser}>
+        Add User
+      </button>
+
       <div className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">

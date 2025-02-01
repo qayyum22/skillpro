@@ -1,0 +1,175 @@
+[33mcommit 5638d3a710c0c3586b22348cd20c231c0a340f86[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Merge: 71b254b 90f2d93
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Sun Dec 1 21:20:25 2024 +0530
+
+    Merge branch 'main' of https://github.com/qayyum22/skillpro
+
+[33mcommit 71b254b53d049013dbe9171ed77d978f4d12c2e7[m
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Sun Dec 1 21:20:15 2024 +0530
+
+    updated html in layout
+
+[33mcommit 90f2d93bb0d51028544f9faef2da6601f67edd30[m
+Merge: ab6bbf3 86a4614
+Author: Qayyum Siddiqui <54232882+qayyum22@users.noreply.github.com>
+Date:   Sat Nov 30 23:26:11 2024 +0530
+
+    Merge branch 'ailabs22:main' into main
+
+[33mcommit ab6bbf32903cf382cf689eb7f37f25fe5b314bba[m
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Sat Nov 30 23:25:33 2024 +0530
+
+    updated project structure
+
+[33mcommit 86a4614d7566eb4ff5677368f536d576cfac03e1[m
+Merge: b857716 9ed2d89
+Author: ailabs22 <ailabs.2208@gmail.com>
+Date:   Sat Nov 30 23:19:26 2024 +0530
+
+    Merge pull request #6 from qayyum22/main
+    
+    downgraded react
+
+[33mcommit 9ed2d89a0933935ed1f7e6bac148031eda4155e0[m
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Sat Nov 30 23:18:29 2024 +0530
+
+    downgraded react
+
+[33mcommit b8577160db7b2052feb9223cfe761367be49b224[m
+Merge: b2f59b2 c3217cf
+Author: ailabs22 <ailabs.2208@gmail.com>
+Date:   Sat Nov 30 23:15:06 2024 +0530
+
+    Merge pull request #5 from qayyum22/main
+    
+    updated project
+
+[33mcommit c3217cfe46f6d073185eaa1dd4cada6c409f35d7[m
+Merge: 0b5ad22 db899b8
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Sat Nov 30 23:12:54 2024 +0530
+
+    Merge branch 'main' of https://github.com/qayyum22/skillpro
+
+[33mcommit 0b5ad22166a046f5f0201c38d93f6578e8d8de04[m
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Sat Nov 30 23:12:43 2024 +0530
+
+    updated packages
+
+[33mcommit db899b8ad1bd44f8ff411754515667bddc4846f7[m
+Merge: 39af916 b2f59b2
+Author: Qayyum Siddiqui <54232882+qayyum22@users.noreply.github.com>
+Date:   Sat Nov 30 23:05:33 2024 +0530
+
+    Merge branch 'ailabs22:main' into main
+
+[33mcommit 39af916316ad53d30b579879a9a43639ce01c9bb[m
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Sat Nov 30 23:01:27 2024 +0530
+
+    updated project
+
+[33mcommit b2f59b224c3adab20fa4830df6a190ea5975cbb5[m
+Author: ailabs22 <ailabs.2208@gmail.com>
+Date:   Thu Nov 28 22:40:17 2024 +0530
+
+    Update firebase.ts
+
+[33mcommit e00ea5b47124ded4ee3431e3b4439b5122a3fd8c[m
+Merge: 50244f0 0e5a21e
+Author: ailabs22 <ailabs.2208@gmail.com>
+Date:   Thu Nov 28 22:30:48 2024 +0530
+
+    Merge pull request #4 from qayyum22/main
+    
+    updated auth
+
+[33mcommit 0e5a21e8a45ab8a8b02dc4a4b0a62a9b288bdf93[m
+Merge: 823b396 50244f0
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Thu Nov 28 22:22:39 2024 +0530
+
+    Merge branch 'main' of https://github.com/qayyum22/skillpro
+
+[33mcommit 823b3969031fef2fdff1d5066875b8cd369a6d15[m
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Thu Nov 28 22:22:23 2024 +0530
+
+    updated auth
+
+[33mcommit 50244f0c43cd401509c36b9ca176935cb0daa29e[m
+Merge: 85697b5 cf982ae
+Author: ailabs22 <ailabs.2208@gmail.com>
+Date:   Wed Nov 27 16:35:52 2024 +0530
+
+    Merge pull request #3 from qayyum22/main
+    
+    updated project
+
+[33mcommit cf982aea2b429ed2d6ac08efc69e2b14a86c8b9c[m
+Merge: 5cd2a3c 85697b5
+Author: Qayyum Siddiqui <54232882+qayyum22@users.noreply.github.com>
+Date:   Wed Nov 27 16:28:54 2024 +0530
+
+    Merge branch 'ailabs22:main' into main
+
+[33mcommit 5cd2a3cecefe3565b59f1f095203ab4547d3aaa1[m
+Merge: 490ab60 e593eb0
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Wed Nov 27 07:41:26 2024 +0530
+
+    Merge branch 'main' of https://github.com/qayyum22/skillpro
+
+[33mcommit 490ab60da50a42276594557ff60327b3f686f26b[m
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Wed Nov 27 07:41:07 2024 +0530
+
+    updated
+
+[33mcommit 85697b5bbcf33483086d03b1ec9f8854a76f6546[m
+Merge: 8e2befb e593eb0
+Author: ailabs22 <ailabs.2208@gmail.com>
+Date:   Tue Nov 26 19:56:06 2024 +0530
+
+    Merge pull request #2 from qayyum22/main
+    
+    added writing module
+
+[33mcommit e593eb0e17778297a441e4c645625c55d70f21a7[m
+Merge: 1d28971 8e2befb
+Author: Qayyum Siddiqui <54232882+qayyum22@users.noreply.github.com>
+Date:   Tue Nov 26 19:55:11 2024 +0530
+
+    Merge branch 'ailabs22:main' into main
+
+[33mcommit 1d28971ba294896505c92c460457ca646ba4b6b7[m
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Tue Nov 26 19:54:07 2024 +0530
+
+    added writing module
+
+[33mcommit 8e2befb5c5a6c09311364c0112609fe86e008e76[m
+Merge: ae5f27e 7a011fb
+Author: ailabs22 <ailabs.2208@gmail.com>
+Date:   Wed Nov 13 15:23:03 2024 +0530
+
+    Merge pull request #1 from qayyum22/main
+    
+    updated
+
+[33mcommit 7a011fbc7af5ed5b8baa0f7aa89f435b90245e18[m
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Wed Nov 13 15:18:16 2024 +0530
+
+    updated
+
+[33mcommit ae5f27efd34ac37d035f033930b293664ba598ab[m
+Author: Qayyum <qayyumabdul660@gmail.com>
+Date:   Wed Nov 13 15:09:07 2024 +0530
+
+    Initial commit from Create Next App
