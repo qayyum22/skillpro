@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     if (!client) {
       throw new Error("Failed to connect to the database");
     }
-    const db = client.db("skillpro");
+    const db = client.db("testprephaven");
     // Save or update user in MongoDB for OAuth providers
     const writingTest = await db
       .collection("writingtest")

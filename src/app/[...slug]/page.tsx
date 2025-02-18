@@ -20,3 +20,5 @@ export default function CatchAll({ params }: { params: { slug: string[] } }) {
     </div>
   );
 }
+
+
