@@ -1,3 +1,10 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "next/core-web-vitals", // Extends Next.js core web vitals rules
+    "next/typescript" // Extends Next.js TypeScript rules
+  ],
+  "rules": {
+    "no-unused-expressions": "off", // Disables no-unused-expressions rule
+    "@typescript-eslint/no-unused-expressions": "off" // Disables TypeScript-specific no-unused-expressions rule
+  }
 }

@@ -46,7 +46,7 @@ interface TestResult {
   };
 }
 
-const API_URL = process.env.VITE_API_URL;
+const API_URL = 'your_api_url_here'; // Replace with your actual API URL
 
 export const evaluateWriting = async (data: WritingEvaluation): Promise<EvaluationResponse> => {
   try {

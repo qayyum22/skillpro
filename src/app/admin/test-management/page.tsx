@@ -18,12 +18,11 @@
 
 // export default TestManagement;
 "use client";
-import React, { useEffect, useState } from "react";
 // import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const TestManagement = () => {
     // const router = useRouter();
-    const [loading, setLoading] = useState(true);
 
     // useEffect(() => {
     //     const userRole = document.cookie
@@ -47,7 +46,7 @@ const TestManagement = () => {
             Test Management
             <div>
                 <button>
-                    <a href="/admin/test-management/add-test">Add Test</a>
+                    <Link href="/admin/test-management/add-test">Add Test</Link>
                 </button>
             </div>
         </div>

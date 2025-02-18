@@ -10,7 +10,7 @@ const AddTest = () => {
     if (!response.ok) {
       alert("Error adding test");
     } else {
-      const data = await response.json();
+      await response.json();
       alert("Test Added successfully");
     }
   };

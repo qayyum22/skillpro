@@ -2,8 +2,14 @@ import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export default function CatchAll({ params }: { params: { slug: string[] } }) {
-  const { slug } = params;
+interface PageProps {
+  params: Promise<{
+    slug: string[];
+  }>;
+}
+
+export default async function CatchAll({ params }: PageProps) {
+  const { slug } = await params;
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
