@@ -7,6 +7,7 @@ import WritingInstructions from "./WritingInstructions";
 import { tasks } from "./WritingData";
 import { toast } from "react-hot-toast";
 import WritingResults from "./WritingResults";
+import {transformApiResponse} from "../../../lib/utils";
 
 
 interface WritingModuleProps {
@@ -44,34 +45,31 @@ const WritingModule: React.FC<WritingModuleProps> = ({
       .filter((word) => word.length > 0).length;
   };
 
+
+
   const handleSubmit = async () => {
-    
     setEvaluating(true);
     try {
-     
-      const evaluations = await fetch("/api/writing", {
+      const response = await fetch("/api/writing", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({task1question, task1answer, task2question, task2answer}),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ task1question, task1answer, task2question, task2answer }),
       });
-
-      if (!evaluations.ok) {
-        throw new Error("Failed to evaluate writing submissions");
-      }
-
-      const data = await evaluations.json();
+  
+      if (!response.ok) throw new Error("Failed to evaluate writing submissions");
+  
+      const { result } = await response.json(); // API now returns { result }
       
-      setEvaluationResults(data);
+      setEvaluationResults(result); // No need to transform, API already formats JSON
       setShowResults(true);
-
     } catch (error) {
+      console.error("Error in handleSubmit:", error);
       toast.error("Failed to evaluate writing submissions");
     } finally {
       setEvaluating(false);
     }
   };
+  
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
@@ -107,11 +105,10 @@ const WritingModule: React.FC<WritingModuleProps> = ({
               <button
                 key={task}
                 onClick={() => setCurrentTask(index)}
-                className={`px-4 py-2 rounded-lg ${
-                  currentTask === index
+                className={`px-4 py-2 rounded-lg ${currentTask === index
                     ? "bg-blue-600 text-white"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
+                  }`}
               >
                 {task}
               </button>
@@ -147,7 +144,7 @@ const WritingModule: React.FC<WritingModuleProps> = ({
           </div>
         </div>
       )}
-      {showResults && <WritingResults />}
+      {showResults && <WritingResults evaluationResults={evaluationResults} />}
     </div>
   );
 };

@@ -36,7 +36,7 @@ const SignUp = () => {
       // });
       e.preventDefault();
       try {
-        await setDoc(doc(firestore, 'users', user.uid), { // Corrected to use `doc`
+        await setDoc(doc(firestore, 'users', email), { // Corrected to use `doc`
           id: user.uid,
           name: email,
           email: user.email,
@@ -44,8 +44,9 @@ const SignUp = () => {
           subscriptionPlan: {
             type: 'starter',
             fullTestRemaining: 1,
-            noduleTestsRemaining: 4,
+            moduleTestsRemaining: 4,
           },
+          role: 'admin',
           accountCreatedAt: new Date().toISOString(),
           lastLogin: new Date().toISOString(), // Corrected `Date` to `new Date().toISOString()`
         });

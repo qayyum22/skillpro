@@ -1,33 +1,88 @@
 "use client"
 import Image from "next/image";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from "next/link";
 import { BookOpen, Headphones, Pen, Mic, ArrowRight } from 'lucide-react';
 import students from "../../public/students-studying.jpg"
-import { auth, firestore } from "@/lib/firebase";
+import { auth, firestore, app, getHighscore, uploadHighscore } from "@/lib/firebase";
 import { doc, setDoc, collection, addDoc } from "firebase/firestore";
 import Script from "next/script";
 
 export default function Home() {
 
 
+  const [currentHighScore, setCurrentHighScore] = useState(0);
+  
+
+
+  // const addUser = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     addDoc(collection(firestore, 'users',), {
+  //       Name: "gulam",
+  //       Age: "60",
+  //       Gender: "M",
+  //       Email: "gmsiddiqui@gmail.com"
+  //     });
+  //     alert("User created successfully");
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Failed to create account");
+  //   }
+  // };
+
+  // const addUser = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     const docRef = await addDoc(collection(firestore, 'users'), {
+  //       Name: "gulam",
+  //       Age: 60, // Age should typically be a number, not a string
+  //       Gender: "M",
+  //       Email: "gmsiddiqui@gmail.com"
+  //     });
+  //     console.log("Document written with ID: ", docRef.id);
+  //     alert("User created successfully");
+  //   } catch (err) {
+  //     console.error("Error adding document: ", err);
+  //     alert("Failed to create account");
+  //   }
+  // };
 
 
   const addUser = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      addDoc(collection(firestore, 'users',), {
+      await setDoc(doc(firestore, "users", "someUniqueId"), {
         Name: "gulam",
-        Age: "60",
-        isMale: true,
+        Age: 60,
+        Gender: "M",
         Email: "gmsiddiqui@gmail.com"
       });
       alert("User created successfully");
     } catch (err) {
-      console.error(err);
+      console.error("Error adding document: ", err);
       alert("Failed to create account");
     }
   };
+
+  // useEffect(() => {
+  //   const getData = async () =>{
+  //     let result = await getHighscore();
+  //     setCurrentHighScore(result);
+  //   }
+    
+  //   getData();
+  // },[])
+ 
+
+  // const handleFormSubmission = async (e : any) => {
+  //   e.preventDefault();
+  //   let result = await uploadHighscore(e.target.newScore.value);
+  //   setCurrentHighScore(e.target.newScore.value);
+  // }
+
+
+
 
 
   return (
@@ -35,9 +90,17 @@ export default function Home() {
 
       {/* Hero Section */}
 
-      <button onClick={addUser}>
+      {/* <button onClick={addUser}>
         Add User
-      </button>
+      </button> */}
+
+      {/* <p>
+        Current High Score : {currentHighScore}
+        <form onSubmit={handleFormSubmission}>
+          <input type="number" id="newScore" placeholder='0'/>
+            <button type="submit">Add new score!</button>
+        </form>
+      </p> */}
 
       <div className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto">

@@ -8,6 +8,12 @@ import { ProfileDropdown } from "./profile-dropdown";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
+  
+
+  const handleLogout = async () => {
+    await logout();
+    window.location.href = "/";
+  }
 
   return (
     <nav className="bg-white shadow-sm">
@@ -16,7 +22,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
               <GraduationCap className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">IELTS Pro</span>
+              <span className="text-xl font-bold text-gray-900">TestPrepHaven</span>
             </Link>
           </div>
 
@@ -38,7 +44,7 @@ const Navbar = () => {
               About Us
             </Link>
             {user ? (
-              <ProfileDropdown user={user} onLogout={logout} />
+              <ProfileDropdown user={user} onLogout={handleLogout} />
             ) : (
               <>
                 <Link

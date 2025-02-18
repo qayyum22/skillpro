@@ -1,10 +1,116 @@
-"use client"
+// "use client";
+// import React, { useState } from 'react';
+// import { signInWithEmailAndPassword } from 'firebase/auth';
+// import { auth, firestore } from '../../../lib/firebase';
+// import Link from 'next/link';
+// import { useRouter } from 'next/navigation';
+// import { LogIn } from 'lucide-react';
+// import { doc, getDoc, setDoc } from 'firebase/firestore';
+
+// const Login = () => {
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [error, setError] = useState('');
+//   const router = useRouter();
+
+//   const handleSubmit = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     try {
+//       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+//       const user = userCredential.user;
+
+//       // 🔹 Fetch user role from Firestore
+//       const userDoc = doc(firestore, 'users', user.uid);
+//       let userSnapshot = await getDoc(userDoc);
+
+//       let userRole = "user"; // Default role if not found
+
+//       if (!userSnapshot.exists()) {
+//         console.warn("User not found in Firestore, adding default role...");
+//         await setDoc(userDoc, { role: userRole, email: user.email });
+//       } else {
+//         userRole = userSnapshot.data()?.role || "user";
+//       }
+
+//       // 🔹 Send to API for secure cookie storage
+//       const response = await fetch('/api/auth/login', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ userId: user.uid, userRole }),
+//       });
+
+//       if (!response.ok) {
+//         console.error("Failed to set auth cookie:", await response.text());
+//         setError("Login successful, but session couldn't be saved.");
+//         return;
+//       }
+
+//       router.push('/dashboard');
+//     } catch (err: any) {
+//       console.error("Login error:", err.message);
+//       setError(err.message || 'Invalid email or password');
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+//       <div className="max-w-md w-full space-y-8">
+//         <h2 className="text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+//         <form className="space-y-6" onSubmit={handleSubmit}>
+//           {error && <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">{error}</div>}
+
+//           <div className="rounded-md shadow-sm">
+//             <input
+//               id="email-address"
+//               type="email"
+//               required
+//               value={email}
+//               onChange={(e) => setEmail(e.target.value)}
+//               className="w-full px-3 py-2 border rounded-t-md text-gray-900"
+//               placeholder="Email address"
+//             />
+//             <input
+//               id="password"
+//               type="password"
+//               required
+//               value={password}
+//               onChange={(e) => setPassword(e.target.value)}
+//               className="w-full px-3 py-2 border rounded-b-md text-gray-900"
+//               placeholder="Password"
+//             />
+//           </div>
+
+//           <button
+//             type="submit"
+//             className="w-full py-2 px-4 rounded-md text-white bg-blue-600 hover:bg-blue-700"
+//           >
+//             <LogIn className="inline-block h-5 w-5 mr-2" />
+//             Sign in
+//           </button>
+
+//           <div className="text-sm text-center">
+//             <Link href="/auth/signup" className="text-blue-600 hover:text-blue-500">
+//               Don't have an account? Sign up
+//             </Link>
+//           </div>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Login;
+
+
+"use client";
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../lib/firebase';
+import { auth, firestore } from '../../../lib/firebase';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { LogIn } from 'lucide-react';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,79 +118,124 @@ const Login = () => {
   const [error, setError] = useState('');
   const router = useRouter();
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+
+  //   e.preventDefault();
+  //   try {
+  //     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  //     const user = userCredential.user;
+
+  //     // Fetch user role from Firestore
+  //     const userDoc = doc(firestore, 'users', user.uid);
+  //     let userSnapshot = await getDoc(userDoc);
+
+  //     let userRole = "user"; // Default role if not found
+
+  //     if (userSnapshot.exists()) {
+  //       userRole = userSnapshot.data()?.role || "user";
+  //     }
+  //     else {
+  //       console.warn("User not found in Firestore, adding default role...");
+  //       await setDoc(userDoc, { role: userRole, email: user.email });
+  //     }
+
+  //     console.log(`Fetched Role from Firestore: ${userRole}`);
+
+
+  //     // Set user ID and role in cookies
+  //     Cookies.set('userId', user.uid, { expires: 7, path: '/' });
+  //     Cookies.set('userRole', userRole, { expires: 7, path: '/' });
+
+  //     if(userRole === "admin") {
+  //       router.push('/admin/home');
+  //     } else {
+  //       router.push('/dashboard');
+  //     }
+      
+
+  //   } catch (err: any) {
+  //     console.error("Login error:", err.message);
+  //     setError(err.message || 'Invalid email or password');
+  //   }
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push('/dashboard');
-    } catch (err) {
-      setError('Invalid email or password');
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      // 🔍 Fetch user data from Firestore
+      const userDoc = doc(firestore, 'users', email);
+      let userSnapshot = await getDoc(userDoc);
+  
+      if (!userSnapshot.exists()) {
+        alert("User does not exist in Firestore.");
+        return;
+      }
+      
+      console.log(userSnapshot.data());
+      let userRole = userSnapshot.data()?.role;
+  
+      // 🔍 Debug: Log the entire document data
+      console.log("Firestore Document Data:", userSnapshot.data());
+      console.log(`Extracted Role from Firestore: ${userRole}`);
+  
+      // 🔍 Debug: Log before setting cookies
+      console.log(`Storing in cookies -> userId: ${user.uid}, userRole: ${userRole}`);
+  
+      // ✅ Store user ID and role in cookies
+      Cookies.set('userId', user.uid, { expires: 7, path: '/' });
+      Cookies.set('userRole', userRole, { expires: 7, path: '/' });
+  
+      // 🔄 Redirect based on role
+      userRole === "admin" ? router.push('/admin/home') : router.push('/dashboard');
+  
+    } catch (err: any) {
+      console.error("Login error:", err.message);
+      setError(err.message || 'Invalid email or password');
     }
   };
 
+  
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
-              {error}
-            </div>
-          )}
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-            </div>
+        <h2 className="text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          {error && <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">{error}</div>}
+
+          <div className="rounded-md shadow-sm">
+            <input
+              id="email-address"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2 border rounded-t-md text-gray-900"
+              placeholder="Email address"
+            />
+            <input
+              id="password"
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border rounded-b-md text-gray-900"
+              placeholder="Password"
+            />
           </div>
 
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <LogIn className="h-5 w-5 text-blue-500 group-hover:text-blue-400" />
-              </span>
-              Sign in
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full py-2 px-4 rounded-md text-white bg-blue-600 hover:bg-blue-700"
+          >
+            <LogIn className="inline-block h-5 w-5 mr-2" />
+            Sign in
+          </button>
 
           <div className="text-sm text-center">
-            <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link href="/auth/signup" className="text-blue-600 hover:text-blue-500">
               Don't have an account? Sign up
             </Link>
           </div>
