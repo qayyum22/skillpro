@@ -1,7 +1,4 @@
 "use client";
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
 
 export default function AdminDashboard() {
   // const [isAdmin, setIsAdmin] = useState(false);
