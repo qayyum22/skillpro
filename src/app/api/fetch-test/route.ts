@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
+    const { input } = await req.json();
     const client = await clientPromise;
     if (!client) {
       throw new Error("Failed to connect to the database");
@@ -13,7 +14,7 @@ export async function GET(req: NextRequest) {
       .collection("writingtest")
       .findOne({ "tasks2.test_id": "02" });
 
-    return NextResponse.json({ response: writingTest }, { status: 200 });
+    return NextResponse.json({ response: writingTest + input }, { status: 200 });
   } catch (error) {
     console.error("Error calling Groq API:", error);
     return NextResponse.json(

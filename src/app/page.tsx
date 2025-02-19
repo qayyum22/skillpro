@@ -1,17 +1,17 @@
 "use client"
 import Image from "next/image";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from "next/link";
 import { BookOpen, Headphones, Pen, Mic, ArrowRight } from 'lucide-react';
 import students from "../../public/students-studying.jpg"
-import { auth, firestore, app, getHighscore, uploadHighscore } from "@/lib/firebase";
-import { doc, setDoc, collection, addDoc } from "firebase/firestore";
-import Script from "next/script";
+import { firestore, } from "@/lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
+// import Script from "next/script";
 
 export default function Home() {
 
 
-  const [currentHighScore, setCurrentHighScore] = useState(0);
+  // const [currentHighScore, setCurrentHighScore] = useState(0);
   
 
 

@@ -109,7 +109,7 @@ import { auth, firestore } from '../../../lib/firebase';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { LogIn } from 'lucide-react';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import Cookies from 'js-cookie';
 
 const Login = () => {
@@ -167,7 +167,7 @@ const Login = () => {
   
       // 🔍 Fetch user data from Firestore
       const userDoc = doc(firestore, 'users', email);
-      let userSnapshot = await getDoc(userDoc);
+      const userSnapshot = await getDoc(userDoc);
   
       if (!userSnapshot.exists()) {
         alert("User does not exist in Firestore.");
@@ -175,7 +175,7 @@ const Login = () => {
       }
       
       console.log(userSnapshot.data());
-      let userRole = userSnapshot.data()?.role;
+      const userRole = userSnapshot.data()?.role;
   
       // 🔍 Debug: Log the entire document data
       console.log("Firestore Document Data:", userSnapshot.data());
@@ -236,7 +236,7 @@ const Login = () => {
 
           <div className="text-sm text-center">
             <Link href="/auth/signup" className="text-blue-600 hover:text-blue-500">
-              Don't have an account? Sign up
+              Don't have an account `&apos;` Sign up
             </Link>
           </div>
         </form>

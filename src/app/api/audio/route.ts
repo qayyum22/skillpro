@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import Groq from "groq-sdk";
-import clientPromise from '@/lib/mongodb'; // Ensure you have a MongoDB client setup
+// import clientPromise from '@/lib/mongodb'; // Ensure you have a MongoDB client setup
 
 
 

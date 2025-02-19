@@ -16,6 +16,6 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (error) {
-    return NextResponse.json({ message: 'Error processing login' }, { status: 500 });
+    return NextResponse.json({ message: `Error processing login : ${error}` }, { status: 500 });
   }
 }

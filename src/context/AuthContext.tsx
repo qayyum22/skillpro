@@ -60,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await signInWithPopup(auth, githubProvider);
       toast.success('Successfully signed in with GitHub!');
     } catch (error) {
-      toast.error('Failed to sign in with GitHub');
+      toast.error('Failed to sign in with GitHub' + error);
     }
   };
 
@@ -74,7 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       toast.success('Successfully signed in!');
     } catch (error) {
-      toast.error('Failed to sign in');
+      toast.error('Failed to sign in' + error);
     }
   };
 
@@ -85,7 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await signOut(auth);
       toast.success('Verification email sent! Please check your inbox.');
     } catch (error) {
-      toast.error('Failed to sign up');
+      toast.error('Failed to sign up' + error);
     }
   };
 
@@ -103,7 +103,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await signOut(auth);
       toast.success('Successfully logged out!');
     } catch (error) {
-      toast.error('Failed to log out');
+      toast.error('Failed to log out' + error);
     }
   };
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { firestore } from '@/lib/firebase';
 import { collection, query, orderBy, startAfter, limit, getDocs } from 'firebase/firestore';
 import { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
@@ -77,7 +77,7 @@ const UserManagementPage = () => {
 
     useEffect(() => {
         fetchUsers();
-    }, []);
+    }, [fetchUsers]);
 
     return (
         <div style={{ padding: '20px' }}>

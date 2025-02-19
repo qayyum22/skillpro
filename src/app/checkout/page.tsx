@@ -61,12 +61,12 @@ export default function Checkout() {
         console.log(orderId);
         try {
             const options = {
-                key: process.env.key_id,
+                key: process.env.key_id || "",
                 amount: parseFloat(amount!) * 100,
                 currency: "INR",
                 name: "Payment",
                 description: "Payment",
-                order_id: orderId,
+                order_id: orderId || "",
                 handler: async function (response: any) {
                     const data = {
                         orderCreationId: orderId,
@@ -89,6 +89,11 @@ export default function Checkout() {
                 theme: {
                     color: "#3399cc",
                 },
+                prefill: {
+                    name: "Your Name",
+                    email: "email@example.com",
+                    contact: "9999999999"
+                }
             };
             const paymentObject = new window.Razorpay(options);
             paymentObject.on("payment.failed", function (response: any) {
@@ -120,7 +125,7 @@ export default function Checkout() {
                     <CardHeader>
                         <CardTitle className="my-4">Continue</CardTitle>
                         <CardDescription>
-                            By clicking on pay you'll purchase your plan subscription of Rs{" "}
+                            By clicking on pay you`&apos;`ll purchase your plan subscription of Rs{" "}
                             {amount}/month
                         </CardDescription>
                     </CardHeader>

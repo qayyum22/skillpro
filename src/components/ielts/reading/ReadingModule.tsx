@@ -103,7 +103,7 @@
 // export default ReadingModule;
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ReadingPassage from './ReadingPassage';
 import QuestionSection from './QuestionSection';
 import Timer from '@/components/Timer';

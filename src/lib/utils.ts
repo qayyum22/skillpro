@@ -172,7 +172,27 @@ export function cn(...inputs: ClassValue[]) {
 //   }
 // }
 
-export function transformApiResponse(apiResponse: any) {
+
+interface Feedback {
+  content: string;
+  score: number;
+  breakdown: {
+    taskAchievement: number;
+    coherenceCohesion: number;
+    lexicalResource: number;
+    grammaticalAccuracy: number;
+  };
+}
+
+interface ParsedItem {
+  taskNumber: number | null;
+  prompt: string;
+  userAnswer: string;
+  modelAnswer: string;
+  feedback: Feedback;
+}
+
+export function transformApiResponse(apiResponse: { response?: string; choices?: { message?: { content?: string } }[] }) {
   try {
     console.log("Raw API Response:", JSON.stringify(apiResponse, null, 2));
 
@@ -217,7 +237,7 @@ export function transformApiResponse(apiResponse: any) {
       throw new Error("Parsed data is not an array.");
     }
 
-    return parsedData.map((item: any) => ({
+    return parsedData.map((item: any): ParsedItem => ({
       taskNumber: item.taskNumber || null,
       prompt: item.prompt || "",
       userAnswer: item.userAnswer || "",
