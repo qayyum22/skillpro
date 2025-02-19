@@ -220,7 +220,13 @@ import { toast } from 'react-hot-toast';
 import { parts } from './speakingData';
 import WaveSurfer from 'wavesurfer.js';
 
-const SpeakingModule: React.FC = () => {
+
+interface SpeakingModuleProps {
+  onComplete?: (answers: any) => void;
+  isFullTest?: boolean;
+}
+
+const SpeakingModule: React.FC<SpeakingModuleProps> = ({ onComplete, isFullTest}) => {
   const [currentPart, setCurrentPart] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [recordings, setRecordings] = useState<Record<string, string>>({});

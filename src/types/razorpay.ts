@@ -5,7 +5,7 @@ export interface RazorpayOptions {
   name: string;
   description: string;
   order_id: string;
-  handler: (response: RazorpayOptions) => void;
+  handler: (response: RazorpayResponse) => void;
   prefill: {
     name: string;
     email: string;
@@ -33,9 +33,9 @@ export interface OrderResponse {
 declare global {
   interface Window {
     Razorpay: {
-      new (options: any): {
+      new (options: RazorpayOptions): {
         open: () => void;
-        on: (event: string, callback: (response: any) => void) => void;
+        on: (event: string, callback: (response: RazorpayResponse) => void) => void;
       };
     }
   }

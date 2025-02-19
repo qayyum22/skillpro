@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Trophy, ArrowLeft, Loader2 } from 'lucide-react';
-import { generateTestReport } from '@/app/api/evaluation/route';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import EvaluationReport from './EvaluationReport';
 
 interface TestResultsProps {
@@ -30,10 +29,10 @@ const TestResults: React.FC<TestResultsProps> = ({ answers }) => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const testReport = await generateTestReport('test-' + Date.now(), answers);
+        const testReport = "report";
         setResult(testReport);
       } catch (err) {
-        setError('Failed to generate test report. Please try again.');
+        setError('Failed to generate test report. Please try again.' + err);
       } finally {
         setLoading(false);
       }

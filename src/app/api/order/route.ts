@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
         currency: string;
     };
 
-    var options = {
+    let options = {
         amount: amount,
         currency: currency,
         receipt: 'rcp1',

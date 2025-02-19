@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import { BarChart, CheckCircle2, XCircle, LineChart } from 'lucide-react';
+import { CheckCircle2, XCircle, LineChart } from 'lucide-react';
 
 interface EvaluationReportProps {
   result: {

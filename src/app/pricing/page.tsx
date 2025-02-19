@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Check, ArrowLeft, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { CurrencyToggle } from '@/components/pricing/CurrencyToggle';
@@ -88,7 +87,7 @@ const PricingPage: React.FC = () => {
   const [currency, setCurrency] = useState<'USD' | 'INR'>('USD');
   const [loading, setLoading] = useState<string | null>(null);
 //   const { user } = useAuth();
-  const router = useRouter();
+ 
 
   const formatPrice = (price: number) => {
     const value = currency === 'USD' ? price : price * EXCHANGE_RATE;
@@ -116,7 +115,7 @@ const PricingPage: React.FC = () => {
     //     window.location.href = session.url;
     //   }
     } catch (error) {
-      toast.error('Failed to initiate checkout. Please try again.');
+      toast.error('Failed to initiate checkout. Please try again.' + error);
     } finally {
       setLoading(null);
     }

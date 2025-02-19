@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     const db = client.db("skillpro");
     // Save or update user in MongoDB for OAuth providers
     const writingTest = await db.collection("writingtest").insertOne({
-      tasks2,
+      tasks, tasks2
     });
 
     return NextResponse.json({ response: writingTest });
