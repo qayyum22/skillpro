@@ -1,4 +1,4 @@
-import clientPromise from "@/lib/mongodb";
+// import clientPromise from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 const tasks = {
@@ -44,16 +44,16 @@ const tasks2 = {
 
 export async function POST(req: NextRequest) {
   try {
-    const client = await clientPromise;
-    if (!client) {
-      throw new Error("Failed to connect to the database");
-    }
-    const db = client.db("skillpro");
-    // Save or update user in MongoDB for OAuth providers
-    const writingTest = await db.collection("writingtest").insertOne({
-      tasks, tasks2
-    });
-
+    // const client = await clientPromise;
+    // if (!client) {
+    //   throw new Error("Failed to connect to the database");
+    // }
+    // const db = client.db("skillpro");
+    // // Save or update user in MongoDB for OAuth providers
+    // const writingTest = await db.collection("writingtest").insertOne({
+    //   tasks, tasks2
+    // });
+  const writingTest = "hello"
     return NextResponse.json({ response: writingTest });
   } catch (error) {
     console.error("Error calling Groq API:", error);
