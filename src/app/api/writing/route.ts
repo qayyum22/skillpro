@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 // import OpenAI from "openai";
-import clientPromise from "@/lib/mongodb";
+// import clientPromise from "@/lib/mongodb";
 import Groq from "groq-sdk";
 
 // export async function POST(req: NextRequest) {
@@ -139,12 +139,12 @@ export async function POST(req: NextRequest) {
 
     const result = JSON.parse(jsonMatch[1]); // Extracted JSON
 
-    const client = await clientPromise;
-    const db = client.db("skillpro");
-    const grok = db.collection("writingtest");
+    // const client = await clientPromise;
+    // const db = client.db("skillpro");
+    // const grok = db.collection("writingtest");
 
     console.log("Storing result:", result);
-    await grok.insertOne({ ...result }); // Store directly, no extra `{ result }` wrapper
+    // await grok.insertOne({ ...result }); // Store directly, no extra `{ result }` wrapper
 
     return NextResponse.json({ result }, { status: 200 });
   } catch (error) {
