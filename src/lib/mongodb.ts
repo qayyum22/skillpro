@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import functions from "firebase-functions";
+import * as functions from "firebase-functions"; 
 
 const GROK_MONGODB_URI = functions.config().mongo.uri;
 
