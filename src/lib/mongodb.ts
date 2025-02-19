@@ -1,10 +1,13 @@
 import { MongoClient } from "mongodb";
+import functions from "firebase-functions";
 
-if (!process.env.GROK_MONGODB_URI) {
+const GROK_MONGODB_URI = functions.config().mongo.uri;
+
+if (!GROK_MONGODB_URI) {
     throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
 
-const uri = process.env.GROK_MONGODB_URI;
+const uri = GROK_MONGODB_URI;
 const options = {};
 
 let client;
