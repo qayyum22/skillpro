@@ -1,0 +1,10 @@
+I0223 10:44:33.525472   25684 load.go:37] Reloading schema and connectors...
+I0223 10:44:33.557756   25684 control.go:59] [/emulator/skillpro 5cab] UpdateResources(): done
+Schema: sources: schema\schema.gql [2088B] 
+Connector "default": sources: connector\mutations.gql [1233B] connector\queries.gql [1802B] 
+I0223 10:44:33.574994   25684 codegen.go:82] [connector "default" javascriptSdk] Generating sources into "C:\\Users\\DELL\\Desktop\\skillpro\\dataconnect-generated\\js\\default-connector"
+I0223 10:44:33.584078   25684 collector.go:107] schema extensions wrote into "C:\\Users\\DELL\\Desktop\\skillpro\\dataconnect\\.dataconnect\\schema"
+Generated sources: prelude.gql [65218B] 
+I0223 10:44:33.589561   25684 collector.go:107] connector "default" javascriptSdk wrote into "C:\\Users\\DELL\\Desktop\\skillpro\\dataconnect-generated\\js\\default-connector"
+Generated sources: esm\index.esm.js [167B] index.cjs.js [208B] README.md [2740B] react\index.d.ts [181B] react\esm\package.json [17B] react\esm\index.esm.js [182B] index.d.ts [259B] package.json [819B] react\package.json [468B] react\index.cjs.js [195B] esm\package.json [17B] 
+I0223 10:44:33.594549   25684 installsdk.go:76] Running command: C:\Program Files\nodejs\npm.cmd install file:dataconnect-generated\js\default-connector

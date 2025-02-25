@@ -3,7 +3,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { firestore } from '@/lib/firebase';
 import { collection, query, orderBy, startAfter, limit, getDocs } from 'firebase/firestore';
 import { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
-// import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/hooks/useAuth";
+
 
 const UserManagementPage = () => {
     interface User {
@@ -17,20 +18,29 @@ const UserManagementPage = () => {
         //     moduleTestsRemaining: number;
         // };
     }
-    
+
     const [users, setUsers] = useState<User[]>([]);
     const [lastVisible, setLastVisible] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [loader, setLoader] = useState(true);
 
+    const { user, loading } = useAuth(true); // requireAdmin = true
+
+    if (loading) {
+        return <div className="flex min-h-screen items-center justify-center">Loading...</div>;
+    }
+
+    if (!user) {
+        return null; // The useAuth hook will handle redirection
+    }
     // const router = useRouter();
-    
+
 
     // useEffect(() => {
     //         const userRole = document.cookie
     //             .split("; ")
     //             .find((row) => row.startsWith("userRole="))
     //             ?.split("=")[1];
-    
+
     //         if (!userRole) {
     //             router.push("/login"); // Redirect to login if no role found
     //         } else if (userRole !== "admin") {
@@ -39,11 +49,11 @@ const UserManagementPage = () => {
     //             setLoading(false);
     //         }
     //     }, [router]);
-    
+
     //     if (loading) return <p className="text-center text-xl font-bold">Loading...</p>;
 
     const fetchUsers = async (nextPage = false) => {
-        setLoading(true);
+        setLoader(true);
         let q;
         if (nextPage && lastVisible) {
             q = query(
@@ -72,7 +82,7 @@ const UserManagementPage = () => {
             // subscriptionPlan: doc.data().subscriptionPlan.type
         }));
         setUsers(prevUsers => nextPage ? [...prevUsers, ...usersList] : usersList);
-        setLoading(false);
+        setLoader(false);
     };
 
     useEffect(() => {
@@ -102,9 +112,9 @@ const UserManagementPage = () => {
                     ))}
                 </tbody>
             </table>
-            <button 
-                onClick={() => fetchUsers(true)} 
-                disabled={loading} 
+            <button
+                onClick={() => fetchUsers(true)}
+                disabled={loading}
                 style={{ padding: '10px 20px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
             >
                 {loading ? 'Loading...' : 'Load More'}

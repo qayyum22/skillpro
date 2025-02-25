@@ -1,26 +1,77 @@
 // import clientPromise from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
+import { TestService } from "@/services/firebase";
+import { dummyIELTSTests } from "@/data/dummyTests";
 
-export async function GET(req: NextRequest) {
+export async function GET(request: Request) {
   try {
-    const { input } = await req.json();
-    // const client = await clientPromise;
-    // if (!client) {
-    //   throw new Error("Failed to connect to the database");
-    // }
-    // const db = client.db("testprephaven");
-    // // Save or update user in MongoDB for OAuth providers
-    // const writingTest = await db
-    //   .collection("writingtest")
-    //   .findOne({ "tasks2.test_id": "02" });
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '10');
+    const search = searchParams.get('search') || '';
+    const type = searchParams.get('type');
+    const category = searchParams.get('category');
 
-    const writingTest = "hello";
+    // For development, use dummy data
+    if (process.env.NODE_ENV === 'development' && process.env.USE_DUMMY_DATA === 'true') {
+      let filteredTests = [...dummyIELTSTests];
 
-    return NextResponse.json({ response: writingTest + input }, { status: 200 });
+      // Apply filters
+      if (type) {
+        filteredTests = filteredTests.filter(test => test.type === type);
+      }
+
+      if (category) {
+        filteredTests = filteredTests.filter(test => test.category === category);
+      }
+
+      if (search) {
+        const searchLower = search.toLowerCase();
+        filteredTests = filteredTests.filter(test => 
+          test.title.toLowerCase().includes(searchLower) ||
+          test.tasks.some(task => 
+            task.title.toLowerCase().includes(searchLower) ||
+            task.description.toLowerCase().includes(searchLower)
+          )
+        );
+      }
+
+      // Sort by creation date
+      filteredTests.sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      // Pagination
+      const start = (page - 1) * limit;
+      const paginatedTests = filteredTests.slice(start, start + limit);
+
+      return NextResponse.json({
+        data: paginatedTests,
+        total: filteredTests.length,
+        page,
+        limit
+      });
+    }
+    
+    // For production, use Firebase
+    const result = await TestService.getTests({
+      type: type as any,
+      category: category as any,
+      search,
+      page,
+      limit
+    });
+
+    return NextResponse.json({
+      data: result.tests,
+      total: result.total,
+      page,
+      limit
+    });
   } catch (error) {
-    console.error("Error calling Groq API:", error);
+    console.error('Error fetching tests:', error);
     return NextResponse.json(
-      { error: "An error occurred while processing your request." },
+      { message: 'Internal server error' },
       { status: 500 }
     );
   }

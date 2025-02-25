@@ -1,35 +1,32 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-    const { pathname } = new URL(request.url);
-    const userId = request.cookies.get('userId')?.value;
-    const userRole = request.cookies.get('userRole')?.value;
-
-    console.info(`[Middleware] Checking access: Path: ${pathname}, userId: ${userId}, userRole: ${userRole}`);
-
-    // 🚨 Redirect to login if no session
-    if (!userId || !userRole) {
-        console.warn("[Middleware] No session found, redirecting to login.");
-        return NextResponse.redirect(new URL('/login', request.url));
+  // Check if the route starts with /admin or /dashboard
+  if (request.nextUrl.pathname.startsWith('/admin') || request.nextUrl.pathname.startsWith('/dashboard')) {
+    // Get the user data from cookies (we'll store it as a JSON string)
+    const userData = request.cookies.get('user')?.value;
+    
+    if (!userData) {
+      return NextResponse.redirect(new URL('/signin', request.url));
     }
 
-    // 🚨 Restrict admin routes
-    if (pathname.startsWith('/admin') && userRole !== 'admin') {
-        console.warn("[Middleware] Unauthorized access to admin route. Redirecting.");
-        return NextResponse.redirect(new URL('/', request.url)); // Changed from `/`
+    try {
+      const user = JSON.parse(userData);
+      
+      // If trying to access admin and not admin role, redirect to dashboard
+      if (request.nextUrl.pathname.startsWith('/admin') && user.role !== 'admin') {
+        return NextResponse.redirect(new URL('/dashboard', request.url));
+      }
+    } catch (error) {
+      // If there's any error parsing the user data, redirect to signin
+      return NextResponse.redirect(new URL('/signin', request.url));
     }
+  }
 
-    // 🚨 Ensure dashboard route is protected
-    if (pathname.startsWith('/dashboard') && !userRole) {
-        console.warn("[Middleware] Unauthenticated access to dashboard. Redirecting.");
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
-
-    return NextResponse.next();
+  return NextResponse.next();
 }
 
-// 🚀 Apply middleware to protected routes only
 export const config = {
-    matcher: ['/admin/**', '/dashboard/**'], // Fully protect all subroutes
-};
+  matcher: ['/admin/:path*', '/dashboard/:path*']
+}

@@ -26,28 +26,4 @@ export const firestore = getFirestore(app);
 export const storage = getStorage(app);
 
 
-export const getHighscore = async () => {
-  try {
-    const docRef = doc(firestore, "highscore", "current");
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      return docSnap.data().score;
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
-    }
-  } catch (e) {
-    console.log('Error reading document', e);
-  }
-}
-
-export const uploadHighscore = async (newScore : string) => {
-  const docRef = doc(firestore, 'highscore', 'current');
-  let result = await updateDoc(docRef,{
-    score : parseInt(newScore)
-  })
-  return newScore;
-}
 
