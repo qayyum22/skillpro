@@ -17,53 +17,31 @@ const SignUp = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Create the user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Write user data to Firestore
-      // await setDoc(doc(firestore, "users", user.uid), {
-      //   id: user.uid,
-      //   name: email,
-      //   email: user.email,
-      //   subscriptionPlan: {
-      //     type: 'starter',
-      //     fullTestRemaining: 1,
-      //     noduleTestsRemaining: 4,
-      //   },
-      //   accountCreatedAt: new Date().toISOString(),
-      //   lastLogin: Date,
-      // });
-      e.preventDefault();
-      try {
-        await setDoc(doc(firestore, 'users', email), { // Corrected to use `doc`
-          id: user.uid,
-          name: email,
-          email: user.email,
-          auth: user.providerData,
-          subscriptionPlan: {
-            type: 'starter',
-            fullTestRemaining: 1,
-            moduleTestsRemaining: 4,
-          },
-          role: 'admin',
-          accountCreatedAt: new Date().toISOString(),
-          lastLogin: new Date().toISOString(), // Corrected `Date` to `new Date().toISOString()`
-        });
-        alert("User created successfully");
-      } catch (err) {
-        console.error(err);
-        alert("Failed to create account");
-      }
+      await setDoc(doc(firestore, 'users', user.uid), {
+        id: user.uid,
+        name: email,
+        email: user.email,
+        auth: user.providerData,
+        subscriptionPlan: {
+          type: 'starter',
+          fullTestRemaining: 1,
+          moduleTestsRemaining: 4,
+        },
+        role: 'user',
+        accountCreatedAt: new Date().toISOString(),
+        lastLogin: new Date().toISOString(),
+      });
 
-      // Redirect after successful account creation
+      alert("User created successfully");
       router.push("/dashboard");
     } catch (err) {
       console.error(err);
       setError("Failed to create account");
     }
   };
-
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
