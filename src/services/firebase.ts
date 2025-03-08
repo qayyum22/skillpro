@@ -1,43 +1,73 @@
-import { initializeApp } from 'firebase/app';
+import { IELTSTest, IELTSTestType, TestFilters } from '@/types/test'; // Removed TestScores as it is not exported
+import { firestore } from '@/lib/firebase';
 import { 
-  getFirestore, collection, addDoc, updateDoc, doc, 
-  getDoc, getDocs, query, where, orderBy, limit, deleteDoc,
-  startAfter, DocumentData, QueryDocumentSnapshot 
+  collection, 
+  addDoc, 
+  doc, 
+  getDoc, 
+  query, 
+  orderBy, 
+  where, 
+  limit, 
+  getDocs, 
+  deleteDoc, 
+  updateDoc, 
+  QueryDocumentSnapshot, 
+  DocumentData,
+  serverTimestamp
 } from 'firebase/firestore';
-import { IELTSTest, TestFilters } from '@/types/test';
-
-// Your Firebase configuration
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 // Collection references
-const testsCollection = collection(db, 'tests');
+const testsCollection = collection(firestore, 'tests');
+const resultsCollection = collection(firestore, 'testResults');
+
+// Define TestScores type if not already defined
+interface TestScores {
+  overall: number;
+  fluency?: number;
+  vocabulary?: number;
+  grammar?: number;
+  pronunciation?: number;
+}
+
+// Update TestResult type to include strengths and improvements if needed
+interface TestResult {
+  testId: string;
+  userId: string;
+  type: IELTSTestType;
+  scores: TestScores;
+  feedback: {
+    strengths?: string[];
+    improvements?: string[];
+  };
+  recordings?: {
+    full?: {
+      url: string;
+      transcription?: string;
+    };
+  };
+  createdAt: string;
+}
 
 export const TestService = {
   // Add a new test
   async addTest(test: Omit<IELTSTest, 'id' | 'createdAt' | 'updatedAt'>): Promise<IELTSTest> {
-    const timestamp = new Date().toISOString();
+    const timestamp = serverTimestamp();
     const testWithTimestamps = {
       ...test,
       createdAt: timestamp,
       updatedAt: timestamp
     };
-    
     const docRef = await addDoc(testsCollection, testWithTimestamps);
-    return {
+    
+    const newTest = {
       id: docRef.id,
-      ...testWithTimestamps
+      ...test,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
+    
+    return newTest;
   },
 
   // Get a test by ID
@@ -49,9 +79,12 @@ export const TestService = {
       return null;
     }
     
+    const data = docSnap.data();
     return {
       id: docSnap.id,
-      ...docSnap.data()
+      ...data,
+      createdAt: data.createdAt.toDate().toISOString(),
+      updatedAt: data.updatedAt.toDate().toISOString()
     } as IELTSTest;
   },
 
@@ -63,55 +96,138 @@ export const TestService = {
   }> {
     const { type, category, search, page, limit: pageLimit } = filters;
     
-    let q = query(testsCollection, orderBy('createdAt', 'desc'));
-    
-    if (type) {
-      q = query(q, where('type', '==', type));
-    }
-    
-    if (category) {
-      q = query(q, where('category', '==', category));
-    }
-    
-    q = query(q, limit(pageLimit));
-    
-    const querySnapshot = await getDocs(q);
-    const tests: IELTSTest[] = [];
-    
-    querySnapshot.forEach((doc) => {
-      tests.push({
-        id: doc.id,
-        ...doc.data()
-      } as IELTSTest);
-    });
-    
-    // If search term is provided, filter the results in JS
-    // Ideally, you would use a solution like Algolia for text search
-    if (search && search.trim() !== '') {
-      const searchLower = search.toLowerCase();
-      return {
-        tests: tests.filter(test => 
-          test.title.toLowerCase().includes(searchLower) ||
+    try {
+      // Start with a basic query
+      let q = query(testsCollection);
+      
+      // Add type filter if specified
+      if (type) {
+        q = query(q, where('type', '==', type));
+      }
+      
+      // Add category filter if specified
+      if (category) {
+        q = query(q, where('category', '==', category));
+      }
+      
+      // Get all documents that match the filters
+      const querySnapshot = await getDocs(q);
+      let tests = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+          updatedAt: data.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString()
+        } as IELTSTest;
+      });
+      
+      // Sort by createdAt in memory
+      tests.sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      
+      // Apply search filter if provided
+      if (search && search.trim() !== '') {
+        const searchLower = search.toLowerCase();
+        tests = tests.filter(test => 
+          test.title?.toLowerCase().includes(searchLower) ||
           test.tasks.some(task => 
-            task.title.toLowerCase().includes(searchLower) ||
-            task.description.toLowerCase().includes(searchLower)
+            (task as { title?: string; description?: string }).title?.toLowerCase().includes(searchLower) ||
+            (task as { description?: string }).description?.toLowerCase().includes(searchLower)
           )
-        ),
+        );
+      }
+      
+      // Apply pagination
+      const startIndex = (page - 1) * pageLimit;
+      const paginatedTests = tests.slice(startIndex, startIndex + pageLimit);
+      
+      return {
+        tests: paginatedTests,
         total: tests.length,
         lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1] || null
       };
+    } catch (error) {
+      console.error('Error fetching tests:', error);
+      throw error;
     }
+  },
+
+  // Save test result
+  async saveTestResult(result: Omit<TestResult, 'createdAt'>): Promise<TestResult> {
+    const timestamp = serverTimestamp();
+    const resultWithTimestamp = {
+      ...result,
+      createdAt: timestamp
+    };
+    
+    const docRef = await addDoc(resultsCollection, resultWithTimestamp);
     
     return {
-      tests,
-      total: tests.length,
-      lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1] || null
+      ...result,
+      createdAt: new Date().toISOString()
     };
+  },
+
+  // Get test results for a user
+  async getUserTestResults(userId: string): Promise<TestResult[]> {
+    const q = query(
+      resultsCollection,
+      where('userId', '==', userId),
+      orderBy('createdAt', 'desc')
+    );
+    
+    const querySnapshot = await getDocs(q);
+    const results: TestResult[] = [];
+    
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (
+        data &&
+        typeof data.testId === 'string' &&
+        typeof data.userId === 'string' &&
+        typeof data.type === 'string' &&
+        Array.isArray(data.scores)
+      ) {
+        const scores: TestScores = {
+          overall: data.scores[0] || 0,
+          fluency: data.scores[1],
+          vocabulary: data.scores[2],
+          grammar: data.scores[3],
+          pronunciation: data.scores[4]
+        };
+
+        const result: TestResult = {
+          testId: data.testId,
+          userId: data.userId,
+          type: data.type as IELTSTestType,
+          scores,
+          feedback: {
+            strengths: Array.isArray(data.feedback?.strengths) ? data.feedback.strengths : [],
+            improvements: Array.isArray(data.feedback?.improvements) ? data.feedback.improvements : [],
+            
+          },
+          recordings: {
+            full: {
+              url: data.recordings?.full?.url || '',
+              transcription: data.recordings?.full?.transcription || ''
+            }
+          },
+          createdAt: data.createdAt ? data.createdAt.toDate().toISOString() : new Date().toISOString()
+        };
+
+        results.push(result);
+      }
+    });
+    
+    return results;
   },
 
   // Delete a test
   async deleteTest(id: string): Promise<void> {
-    await deleteDoc(doc(testsCollection, id));
+    const docRef = doc(testsCollection, id);
+    await deleteDoc(docRef);
   },
 
   // Update a test
@@ -119,7 +235,11 @@ export const TestService = {
     const docRef = doc(testsCollection, id);
     await updateDoc(docRef, {
       ...updates,
-      updatedAt: new Date().toISOString()
+      updatedAt: serverTimestamp()
     });
   }
 }; 
+
+function deleteTest(id: any, string: any) {
+  throw new Error('Function not implemented.');
+}

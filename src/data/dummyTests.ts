@@ -9,9 +9,16 @@ export const dummyIELTSTests: IELTSTest[] = [
     tasks: [
       {
         taskType: "task1",
+        partType: "task1",
         title: "Academic Task 1: Chart Analysis",
         description: "The graph below shows the consumption of fish and different types of meat in a European country between 1979 and 2004. Summarize the information by selecting and reporting the main features, and make comparisons where relevant.",
         timeGuide: "20 minutes",
+        questions: [ // Added questions array
+          {
+            id: "1",
+            text: "The graph below shows the consumption of fish and different types of meat in a European country between 1979 and 2004. Summarize the information by selecting and reporting the main features, and make comparisons where relevant."
+          }
+        ],
         wordLimit: "Minimum 150 words",
         tips: [
           "Spend about 20 minutes on this task",
@@ -22,8 +29,16 @@ export const dummyIELTSTests: IELTSTest[] = [
       },
       {
         taskType: "task2",
+        partType: "task2",
         title: "Academic Task 2: Essay",
         description: "Some people believe that technological innovations have made our lives more complicated rather than simpler. To what extent do you agree or disagree with this opinion?",
+        questions: [ // Added questions array
+          {
+            id: "1",
+            text: "Some people believe that technological innovations have made our lives more complicated rather than simpler. To what extent do you agree or disagree with this opinion?"
+          }
+        ],
+
         timeGuide: "40 minutes",
         wordLimit: "Minimum 250 words",
         tips: [
@@ -46,8 +61,15 @@ export const dummyIELTSTests: IELTSTest[] = [
     tasks: [
       {
         taskType: "task1",
+        partType: "task1",
         title: "General Task 1: Letter Writing",
         description: "Your English-speaking friend has asked for your help with a college project they are doing about celebrating New Year in different countries. Write a letter to your friend. In your letter:\n• say how important New Year is to people in your country\n• describe how New Year is celebrated in your country\n• explain what you like about New Year celebrations in your country",
+        questions: [ // Added questions array
+          {
+            id: "1",
+            text: "Your English-speaking friend has asked for your help with a college project they are doing about celebrating New Year in different countries. Write a letter to your friend. In your letter:\n• say how important New Year is to people in your country\n• describe how New Year is celebrated in your country\n• explain what you like about New Year celebrations in your country"
+          }
+        ],
         timeGuide: "20 minutes",
         wordLimit: "Minimum 150 words",
         tips: [
@@ -59,8 +81,15 @@ export const dummyIELTSTests: IELTSTest[] = [
       },
       {
         taskType: "task2",
+        partType: "task2",
         title: "General Task 2: Essay",
         description: "Some people say that it is better to work for a large company than a small one. Do you agree or disagree? Give reasons for your answer and include any relevant examples from your own knowledge or experience.",
+        questions: [ // Added questions array
+          {
+            id: "1",
+            text: "Some people say that it is better to work for a large company than a small one. Do you agree or disagree? Give reasons for your answer and include any relevant examples from your own knowledge or experience."
+          }
+        ],
         timeGuide: "40 minutes",
         wordLimit: "Minimum 250 words",
         tips: [
