@@ -7,6 +7,7 @@ interface ModuleCardProps {
   icon: LucideIcon;
   bgColor: string;
   onClick: () => void;
+  className?: string;
 }
 
 const ModuleCard: React.FC<ModuleCardProps> = ({
@@ -14,12 +15,13 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
   description,
   icon: Icon,
   bgColor,
-  onClick
+  onClick,
+  className
 }) => {
   return (
     <button
       onClick={onClick}
-      className="w-full p-6 rounded-xl shadow-lg bg-white hover:shadow-xl transition-shadow duration-200 text-left"
+      className={`w-full p-6 rounded-xl shadow-lg bg-white hover:shadow-xl transition-shadow duration-200 text-left ${className}`}
     >
       <div className="flex items-start space-x-4">
         <div className={`p-3 rounded-lg ${bgColor}`}>

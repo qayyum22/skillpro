@@ -1,18 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getFirestore, collection, addDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { collection, addDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { TestResult } from "@/types/test";
+import { firestore, auth } from "@/lib/firebase"; // Import from the centralized Firebase configuration
+import logger from "@/lib/logger";
 
-const db = getFirestore();
-const resultsCollection = collection(db, 'testResults');
-const usersCollection = collection(db, 'users');
+const resultsCollection = collection(firestore, 'testResults');
+const usersCollection = collection(firestore, 'users');
 
 export async function POST(request: Request) {
   try {
-    const auth = getAuth();
     const user = auth.currentUser;
 
     if (!user) {
+      // Log unauthorized access attempt
+      await logger.security(
+        'Unauthorized access attempt to save-test-result',
+        { headers: request.headers },
+        undefined,
+        undefined,
+        '/api/save-test-result'
+      );
+      
       return NextResponse.json(
         { message: 'Authentication required' },
         { status: 401 }
@@ -23,6 +31,15 @@ export async function POST(request: Request) {
     const { testId, scores, feedback, recordings } = data;
 
     if (!testId || !scores) {
+      // Log validation error
+      await logger.warning(
+        'Invalid test result submission',
+        { data, missing: !testId ? 'testId' : 'scores' },
+        user.uid,
+        user.email || undefined,
+        '/api/save-test-result'
+      );
+      
       return NextResponse.json(
         { message: 'Test ID and scores are required' },
         { status: 400 }
@@ -54,11 +71,30 @@ export async function POST(request: Request) {
       })
     });
 
+    // Log successful test submission
+    await logger.info(
+      'Test result saved successfully',
+      { testId, resultId: resultDoc.id, type: 'speaking' },
+      user.uid,
+      user.email || undefined,
+      '/api/save-test-result'
+    );
+
     return NextResponse.json({
       success: true,
       resultId: resultDoc.id
     });
   } catch (error) {
+    // Log detailed error information
+    await logger.error(
+      'Error saving test result',
+      error as Error,
+      { path: '/api/save-test-result' },
+      auth.currentUser?.uid,
+      auth.currentUser?.email || undefined,
+      '/api/save-test-result'
+    );
+    
     console.error('Error saving test result:', error);
     return NextResponse.json(
       { message: 'Internal server error' },
