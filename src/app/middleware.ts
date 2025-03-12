@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
     const userData = request.cookies.get('user')?.value;
     
     if (!userData) {
-      return NextResponse.redirect(new URL('/signin', request.url));
+      return NextResponse.redirect(new URL('/auth/signin', request.url));
     }
 
     try {
@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
       }
     } catch (error) {
       // If there's any error parsing the user data, redirect to signin
-      return NextResponse.redirect(new URL('/signin', request.url));
+      return NextResponse.redirect(new URL('/auth/signin', request.url));
     }
   }
 

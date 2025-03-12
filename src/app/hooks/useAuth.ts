@@ -80,17 +80,18 @@ export function useAuth(requireAdmin: boolean = false) {
           }
         } else {
           setUser(null);
-          if (window.location.pathname !== '/signin' && 
-              window.location.pathname !== '/signup' && 
-              !window.location.pathname.startsWith('/reset-password')) {
-            router.replace('/signin');
+          const currentPath = window.location.pathname;
+          if (!currentPath.includes('/auth/signin') && 
+              !currentPath.includes('/auth/signup') && 
+              !currentPath.startsWith('/reset-password')) {
+            router.replace('/auth/signin');
           }
         }
       } catch (error) {
         console.error('Auth error:', error);
         setError(error instanceof Error ? error.message : 'Authentication error');
         setUser(null);
-        router.replace('/signin');
+        router.replace('/auth/signin');
       } finally {
         setLoading(false);
       }
